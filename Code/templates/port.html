@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+{% for port in port %}
+<li><h2>{{ port[0] }}</h2></li>
+<li><h2>{{ port[1] }}</h2></li>
+<li><h2>{{ port[2] }}</h2></li>
+{% endfor %}
+
+
+{% endblock %}

@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SeaRatesScraper</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <nav>
+        <button type="button" name="button" id="nav-item"><a href="{{ url_for('index') }}">SeaRatesScraper</a></button>
+        <button type="button" name="button" id="nav-item"><a href="{{ url_for('scrape') }}">Scrape!</a></button>
+        <button type="button" name="button" id="nav-item"><a href="{{ url_for('about') }}">About</a></button>
+
+    </nav>
+    <div class="content">
+        {% block content %}
+
+
+
+        {% endblock %}
+    </div>
+</body>
+</html>

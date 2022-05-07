@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+          {% for port in country %}
+            <a href="{{ url_for('port', id=port.id)}}">{{ port['name'] }}</a><br>
+          {% endfor %}
+
+{% endblock %}

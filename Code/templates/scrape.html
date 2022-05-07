@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+          {% for country in countries %}
+            <a href="{{ url_for('country', id=country.id)}}">{{ country['name'] }}</a><br>
+          {% endfor %}
+
+{% endblock %}
