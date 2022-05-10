@@ -1,5 +1,9 @@
-
 <!DOCTYPE html>
+<!--
+base html file generated on every page, using url_for to get static main.css into each loaded page, simple navbar using url_for
+using blocks to set position of navbar and content
+each html file extends this file
+-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,8 +14,6 @@
     <nav>
         <button type="button" name="button" id="nav-item"><a href="{{ url_for('index') }}">SeaRatesScraper</a></button>
         <button type="button" name="button" id="nav-item"><a href="{{ url_for('scrape') }}">Scrape!</a></button>
-        <button type="button" name="button" id="nav-item"><a href="{{ url_for('about') }}">About</a></button>
-
     </nav>
     <div class="content">
         {% block content %}

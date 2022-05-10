@@ -6,7 +6,10 @@
   <th>Attribute</th>
   <th>Value</th>
 </tr>
-
+<!--
+looping thru data in port given by param.
+setting each row of table to be one attribute, which can be selected by value in []
+-->
 {% for data in port %}
   <tr><td>Name: </td><td>{{ data['name'] }}</td></tr>
   <tr><td>Address: </td><td>{{ data['address'] }}</td></tr>
