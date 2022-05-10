@@ -35,6 +35,14 @@ a{
   text-decoration: none;
 }
 
+table, th, td{
+  color: #DDDDDD;
+  border: 1px solid #FF8C32;
+  border-collapse: collapse;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 button{
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
