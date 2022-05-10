@@ -1,13 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<table>
+<tr>
+  <th>Attribute</th>
+  <th>Value</th>
+</tr>
 
-
-{% for port in port %}
-<li><h2>{{ port[0] }}</h2></li>
-<li><h2>{{ port[1] }}</h2></li>
-<li><h2>{{ port[2] }}</h2></li>
+{% for data in port %}
+  <tr><td>Name: </td><td>{{ data['name'] }}</td></tr>
+  <tr><td>Address: </td><td>{{ data['address'] }}</td></tr>
+  <tr><td>Authority: </td><td>{{ data['port_auth'] }}</td></tr>
+  <tr><td>Phone: </td><td>{{ data['phone'] }}</td></tr>
+  <tr><td>Fax: </td><td>{{ data['fax'] }}</td></tr>
+  <tr><td>E-mail: </td><td>{{ data['email'] }}</td></tr>
+  <tr><td>Cords: </td><td>{{ data['cords'] }}</td></tr>
+  <tr><td>Cords-Decimal: </td><td>{{ data['cords_dec'] }}</td></tr>
+  <tr><td>UN: </td><td>{{ data['un'] }}</td></tr>
+  <tr><td>Type: </td><td>{{ data['type'] }}</td></tr>
+  <tr><td>Size: </td><td>{{ data['size'] }}</td></tr>
+  <tr><td>Website: </td><td>{{ data['website'] }}</td></tr>
+  <tr><td>Terminal: </td><td>{{ data['terminal'] }}</td></tr>
 {% endfor %}
+</table>
 
 
 {% endblock %}
