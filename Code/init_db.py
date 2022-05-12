@@ -2,25 +2,30 @@ import sqlite3
 from bs4 import BeautifulSoup
 import requests
 import sqlite3
+import re
 
 #getting connection to db
-connection = sqlite3.connect('database.db')
-cur = connection.cursor()
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+conn = get_db_connection()
+cur = conn.cursor()
 
 #deleting all if any previous data exists --> removing duplicates
 sql = "DROP TABLE IF EXISTS countries;"
 cur.execute(sql)
 sql = "DROP TABLE IF EXISTS ports;"
 cur.execute(sql)
-connection.commit()
+conn.commit()
 
 #creating tables with all attributes, ports and countries are connected via foreign key in table ports
 sql = "CREATE TABLE countries (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL);"
 cur.execute(sql)
 sql = "CREATE TABLE ports(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,country_id INT, address TEXT, port_auth TEXT, phone INT, fax INT, email TEXT, cords TEXT, cords_dec TEXT, un TEXT, type TEXT, size TEXT, website TEXT, terminal TEXT,FOREIGN KEY(country_id) REFERENCES countries(id));"
 cur.execute(sql)
-connection.commit()
-conn.close()
+conn.commit()
+
 
 
 #selection of substrings contained in data that is needed to be removed
@@ -35,7 +40,6 @@ url = "https://www.searates.com/maritime/"
 result = requests.get(url)
 #parsing all data using BS4
 doc = BeautifulSoup(result.text, "html.parser")
-conn = get_db_connection()
 #delete all posible data in DB
 conn.execute("DELETE FROM countries")
 conn.commit()
@@ -45,9 +49,9 @@ for a in doc.find_all('a', href=True):
     #removing string from previous result to get just the name of the port
     out = a['href'].replace("/maritime/","")
     #sequence of ifs to remove all results with given substrings to remove parasitic data
-    if not search(substring1, out):
-        if not search(substring2, out):
-            if not search(substring3, out):
+    if not re.search(substring1, out):
+        if not re.search(substring2, out):
+            if not re.search(substring3, out):
                 #saving result as another variable before changing it any more to use it later for new url
                 out_url = out
                 out = out.replace("_", " ")
@@ -63,16 +67,16 @@ for a in doc.find_all('a', href=True):
                 for a in doc2.find_all('a', href=True):
                     out2 = a['href'].replace("/port/","")
                     #removing all parasitic data
-                    if not search(substring1, out2):
-                        if not search(substring2, out2):
-                            if not search(substring3, out2):
+                    if not re.search(substring1, out2):
+                        if not re.search(substring2, out2):
+                            if not re.search(substring3, out2):
                                 #saving result to another variable to use it later
                                 out2_url = out2
                                 #removing last 3 chars of result to get rid of eg. '_al' at the end of the name of port
                                 out2 = out2[:- 3]
                                 out2 = out2.replace("_", " ")
                                 #logging out to console
-                                print(out2)
+                                #print(out2)
 
                                 #country id has to be selected from countries to use it in later insert
                                 cursor = conn.cursor()
@@ -96,12 +100,14 @@ for a in doc.find_all('a', href=True):
                                     #adding one for each cycle
                                     x=x+1
                                     #stopping after 25 cycles
-                                    if x == 25:
+                                    if x==25:
                                         break
+                                    if x%2 == 1:
+                                        name = a.text
                                     #each even step works with value, each odd step is just name of field which we dont need
                                     if x%2 == 0:
                                         #logging
-                                        print(a.text)
+                                        print(name ,": ", a.text)
                                         #using .text to get text of each 'a' tag
                                         value = a.text
                                         #selecting which value needs to be updated
@@ -129,6 +135,7 @@ for a in doc.find_all('a', href=True):
                                             conn.execute("UPDATE ports SET website = ? WHERE name = ?",[value, out2])
                                         if x==24:
                                             conn.execute("UPDATE ports SET terminal = ? WHERE name = ?",[value, out2])
+
                                         conn.commit()
 conn.close()
-connection.close()
+conn.close()
